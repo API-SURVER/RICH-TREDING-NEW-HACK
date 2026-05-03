@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SR COMMUNITY</title>
+    <style>
+        :root {
+            --red: #ff0000;
+            --blue: #0000ff;
+            --yellow: #ffff00;
+            --green: #00ff00;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+            font-family: 'Arial', sans-serif;
+            user-select: none;
+        }
+
+        /* Full Screen Background Iframe */
+        #bg-iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
+
+        /* Main Draggable Panel */
+        .main-panel {
+            position: absolute;
+            top: 100px;
+            left: 50px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border: 3px solid var(--red);
+            border-radius: 0px; 
+            text-align: center;
+            color: white;
+            width: 160px;
+            animation: rainbowBorder 8s infinite ease-in-out;
+            cursor: move;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        @keyframes rainbowBorder {
+            0% { border-color: var(--red); box-shadow: 0 0 10px var(--red); }
+            25% { border-color: var(--blue); box-shadow: 0 0 10px var(--blue); }
+            50% { border-color: var(--yellow); box-shadow: 0 0 10px var(--yellow); }
+            75% { border-color: var(--green); box-shadow: 0 0 10px var(--green); }
+            100% { border-color: var(--red); box-shadow: 0 0 10px var(--red); }
+        }
+
+        /* Login Section */
+        #login-content h4 { margin: 0 0 10px 0; font-size: 14px; color: var(--yellow); }
+        input[type="password"] {
+            width: 90px;
+            padding: 8px;
+            background: #111;
+            border: 1px solid white;
+            color: white;
+            text-align: center;
+            border-radius: 0;
+            font-size: 14px;
+            cursor: text;
+        }
+
+        /* Prediction Box */
+        .prediction-box {
+            width: 120px;
+            height: 80px; /* Smaller height as requested */
+            border: 2px solid white;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            border-radius: 0;
+            animation: slowGrow 6s infinite alternate ease-in-out;
+        }
+
+        @keyframes slowGrow {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .brand-name {
+            font-size: 10px;
+            color: var(--blue);
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        #prediction-text {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--yellow);
+            text-shadow: 0 0 10px var(--yellow);
+        }
+
+        #clock {
+            font-size: 12px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .timer-wrap {
+            width: 100%;
+            height: 8px;
+            background: #222;
+            border: 1px solid #555;
+            margin: 10px 0;
+        }
+
+        #timer-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, red, yellow, green);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 8px;
+            background: black;
+            color: white;
+            border: 1px solid white;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 0;
+        }
+
+        button:hover {
+            background: white;
+            color: black;
+        }
+
+        /* Floating Icon Button */
+        #floating-icon {
+            position: absolute;
+            top: 100px;
+            left: 50px;
+            width: 60px;
+            height: 60px;
+            z-index: 101;
+            display: none;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid var(--yellow);
+            box-shadow: 0 0 10px var(--yellow);
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        #floating-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px var(--yellow); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--yellow); }
+            100% { transform: scale(1); box-shadow: 0 0 10px var(--yellow); }
+        }
+
+        .hidden { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+<iframe id="bg-iframe" src="https://tkclub2.com/#/register?invitationCode=67313217616">https://tkclub2.com/#/home/AllLotteryGames/WinGo?id=1</iframe>
+
+<!-- Draggable Main Panel -->
+<div class="main-panel" id="main-panel">
+    
+    <div id="login-content">
+        <h4>SR COMMUNITY</h4>
+        <input type="password" id="pass-field" placeholder="PASS">
+        <br><br>
+        <button onclick="checkPass()">LOGIN</button>
+    </div>
+
+    <div id="main-content" class="hidden">
+        <div class="brand-name">SR COMMUNITY</div> <!-- Name at Top -->
+        <div id="clock">--:--:--</div>
+        
+        <div class="prediction-box">
+            <div id="prediction-text">WAIT</div>
+        </div>
+
+        <div id="timer-val" style="font-size: 12px; font-weight: bold;">--s</div>
+        <div class="timer-wrap">
+            <div id="timer-bar"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="toggleHide()">HIDE</button>
+            <button onclick="exitApp()">EXIT</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Icon (Hidden initially) -->
+<div id="floating-icon" onclick="toggleShow()">
+    <img src="https://iili.io/qdmWQ9a.md.jpg" alt="Show Panel">
+</div>
+
+<script>
+    const KEY = "apurbo1x";
+    let resultOptions = ["BIG", "SMALL", "SMALL", "BIG"];
+    let lastSecond = -1;
+
+    // Login Function
+    function checkPass() {
+        if(document.getElementById('pass-field').value === KEY) {
+            document.getElementById('login-content').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            startApp();
+        } else {
+            alert("WRONG PASSWORD");
+        }
+    }
+
+    // App Initialization
+    function startApp() {
+        // Run update every 100ms for smooth synchronization
+        setInterval(syncApp, 100);
+    }
+
+    function syncApp() {
+        const now = new Date();
+        // Get BD time (UTC+6)
+        const bdTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
+        
+        // Update Clock Display
+        const bdString = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Dhaka',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+        }).format(now);
+        document.getElementById('clock').innerText = "BD: " + bdString;
+
+        // Synchronized Timer Logic (assuming 30s game cycle like Wingo 30s or similar)
+        // If it's a 1-minute game, use 60. For 30s game, use 30.
+        // Let's use 30s cycle as per previous code's intent
+        const seconds = now.getUTCSeconds();
+        const currentCycleSeconds = seconds % 30;
+        const timeLeft = 30 - currentCycleSeconds;
+
+        // Update UI
+        document.getElementById('timer-val').innerText = timeLeft + "s";
+        document.getElementById('timer-bar').style.width = (timeLeft / 30 * 100) + "%";
+
+        // Trigger new prediction exactly when a new cycle starts
+        if (timeLeft === 30 && seconds !== lastSecond) {
+            updateRes();
+        }
+        lastSecond = seconds;
+    }
+
+    function updateRes() {
+        const randomIndex = Math.floor(Math.random() * resultOptions.length);
+        document.getElementById('prediction-text').innerText = resultOptions[randomIndex];
+    }
+
+    // Hide/Show Toggle Logic
+    function toggleHide() {
+        const panel = document.getElementById('main-panel');
+        const icon = document.getElementById('floating-icon');
+        icon.style.top = panel.style.top;
+        icon.style.left = panel.style.left;
+        panel.style.display = 'none';
+        icon.style.display = 'block';
+    }
+
+    function toggleShow() {
+        const panel = document.getElementById('main-panel');
+        const icon = document.getElementById('floating-icon');
+        panel.style.display = 'block';
+        icon.style.display = 'none';
+    }
+
+    function exitApp() {
+        location.reload();
+    }
+
+    // Draggable Functionality
+    const panel = document.getElementById('main-panel');
+    const icon = document.getElementById('floating-icon');
+
+    function makeDraggable(element) {
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        element.addEventListener("mousedown", dragStart);
+        element.addEventListener("touchstart", dragStart, {passive: false});
+
+        function dragStart(e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "BUTTON") return;
+            if (e.type === "touchstart") {
+                initialX = e.touches[0].clientX - xOffset;
+                initialY = e.touches[0].clientY - yOffset;
+            } else {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+            }
+            document.addEventListener("mousemove", drag);
+            document.addEventListener("mouseup", dragEnd);
+            document.addEventListener("touchmove", drag, {passive: false});
+            document.addEventListener("touchend", dragEnd);
+        }
+
+        function drag(e) {
+            e.preventDefault();
+            if (e.type === "touchmove") {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            setTranslate(currentX, currentY, element);
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        }
+
+        function dragEnd() {
+            initialX = currentX;
+            initialY = currentY;
+            document.removeEventListener("mousemove", drag);
+            document.removeEventListener("mouseup", dragEnd);
+            document.removeEventListener("touchmove", drag);
+            document.removeEventListener("touchend", dragEnd);
+        }
+    }
+
+    makeDraggable(panel);
+    makeDraggable(icon);
+
+</script>
+
+</body>
+</html>
